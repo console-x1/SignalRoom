@@ -1,0 +1,13 @@
+node_modules
+node_modules/
+node_modules/*
+
+database
+database/
+database/*
+
+config.json
+shadow.json
+
+*-lock.json
+*.log

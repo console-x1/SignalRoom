@@ -1,0 +1,31 @@
+{
+    "prefix": "!",
+    "color": "#0000ff",
+    "id": "YOUR BOT ID",
+    "owners": ["YOUR DISCORD ID"],
+    "channels": {
+        "logs": "ID OF THE LOG CHANNEL",
+        "naturalEvents": "ID OF THE NATURAL EVENT CHANNEL",
+        "financials": "ID OF THE FINANCIAL CHANNEL",
+        "cyberSecurity": "ID OF THE CYBERSECURITY CHANNEL",
+        "certFR": "ID OF THE CERT-FR CHANNEL",
+
+        "newsCategory": ["DISCORD ID OF THE NEWS CATEGORY", "DISCORD ID OF THE SECOND NEWS CATEGORY", "ETC"]
+    },
+    "roles": {
+        "naturalEvents": "ID OF THE ROLE TO MENTION FOR NATURAL EVENTS",
+        "cyberSecurity": "ID OF THE ROLE TO MENTION FOR CYBERSECURITY ALERT",
+        "certFR": "ID OF THE ROLE TO MENTION FOR CERT-FR ALERT"
+    },
+    "api": {
+        "firms": "YOUR FIRMS API KEY"
+    },
+    "RSS": {
+        "sources": "SOURCES DEFINED IN ./utils/RSSsources.js",
+        "discordWebhook": "YOUR DISCORD WEBHOOK"
+    },
+    "backup": {
+        "url": "YOUR BACKUP URL - EMPTY TO DISABLE",
+        "token": "BACKUP TOKEN"
+    }
+}

@@ -1,0 +1,42 @@
+{
+    "name": "Español",
+    "flag": "🇪🇸",
+    "commands": {
+        "mention": {
+            "0-use": "Para usar este comando, escriba: `{prefix}mention <role>` o use el comando de barra diagonal `/mention` y seleccione un rol. Este comando mencionará el rol especificado.",
+            "commandDescription": "Menciona un rol ping. Comando staff",
+            "invalidRole": "El rol especificado no es válido. No es un rol de notificación.",
+            "noPermission": "No tiene permiso para mencionar este rol.",
+            "noRole": "Por favor especifique un rol para mencionar. Uso correcto: `{prefix}mencionar <rol>`.",
+            "options": {
+                "role": "Papel a mencionar"
+            },
+            "roleNotFound": "El rol especificado no existe.",
+            "mentionSent": "Mención enviada exitosamente."
+        },
+        "ping": {
+            "0-use": "Para usar este comando, escriba: `{prefix}ping` o use el comando de barra diagonal `/ping`. Este comando informará el ping del bot. Ella no necesita ningún argumento.",
+            "commandDescription": "Muestra el ping del bot.",
+            "description": "Mi ping es: **{ping} ms**.",
+            "title": "¡Apestar!"
+        }
+    },
+    "embed": {
+        "footer": "Solicitado por {usuario}"
+    },
+    "error": {
+        "botOwnerOnly": "Debes ser el propietario del bot para ejecutar este comando.",
+        "cooldown": "Espere {tiempo} segundos antes de volver a utilizar este comando.",
+        "default": "Se produjo un error al ejecutar el comando.",
+        "defaultInteraction": "Se produjo un error al procesar la interacción.",
+        "guildOwnerOnly": "Debe ser el propietario del servidor para ejecutar este comando.",
+        "invalidArgs": "Argumentos inválidos. Uso correcto: {uso}",
+        "permsOnly": "Debe tener los siguientes permisos para ejecutar este comando: {perms}",
+        "title": "Error"
+    },
+    "lang": {
+        "ask": "Seleccione su idioma en el menú a continuación:",
+        "confirm": "Idioma configurado en",
+        "selectDefault": "Por favor seleccione su idioma:"
+    }
+}

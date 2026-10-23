@@ -1,0 +1,42 @@
+{
+    "name": "English",
+    "flag": "🇬🇧",
+    "commands": {
+        "mention": {
+            "0-use": "To use this command, type: `{prefix}mention<role>` or use the slash `/mention` command and select a role. This command will mention the specified role.",
+            "commandDescription": "Mentions a ping role. Staff order",
+            "invalidRole": "The specified role is invalid. This is not a role notification.",
+            "noPermission": "You do not have permission to mention this role.",
+            "noRole": "Please specify a role to mention. Correct usage: `{prefix}mention <role>`.",
+            "options": {
+                "role": "Role to mention"
+            },
+            "roleNotFound": "The specified role does not exist.",
+            "mentionSent": "Mention sent successfully."
+        },
+        "ping": {
+            "0-use": "To use this command, type: `{prefix}ping` or use the slash `/ping` command. This command will indicate the bot ping. She doesn't need any arguments.",
+            "commandDescription": "Displays the bot ping.",
+            "description": "My ping is: **{ping} ms**.",
+            "title": "Pong!"
+        }
+    },
+    "embed": {
+        "footer": "Requested by {user}"
+    },
+    "error": {
+        "botOwnerOnly": "You must be the bot owner to run this command.",
+        "cooldown": "Please wait {time} seconds before using this command again.",
+        "default": "An error occurred while executing the command.",
+        "defaultInteraction": "An error occurred while processing the interaction.",
+        "guildOwnerOnly": "You must be the server owner to run this command.",
+        "invalidArgs": "Invalid arguments. Correct use: {usage}",
+        "permsOnly": "You must have the following permissions to run this command: {perms}",
+        "title": "Error"
+    },
+    "lang": {
+        "ask": "Please select your language from the menu below:",
+        "confirm": "Language set to",
+        "selectDefault": "Please select your language:"
+    }
+}

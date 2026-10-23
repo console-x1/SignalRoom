@@ -1,0 +1,42 @@
+{
+    "name": "Português",
+    "flag": "🇧🇷",
+    "commands": {
+        "mention": {
+            "0-use": "Para usar este comando, digite: `{prefix}mention <role>` ou use o comando de barra `/mention` e selecione uma função. Este comando mencionará a função especificada.",
+            "commandDescription": "Menciona uma função de ping. Ordem de pessoal",
+            "invalidRole": "A função especificada é inválida. Esta não é uma notificação de função.",
+            "noPermission": "Você não tem permissão para mencionar esta função.",
+            "noRole": "Especifique uma função a ser mencionada. Uso correto: `{prefix}menção<role>`.",
+            "options": {
+                "role": "Função a mencionar"
+            },
+            "roleNotFound": "A função especificada não existe.",
+            "mentionSent": "Menção enviada com sucesso."
+        },
+        "ping": {
+            "0-use": "Para usar este comando, digite: `{prefix}ping` ou use o comando slash `/ping`. Este comando indicará o ping do bot. Ela não precisa de argumentos.",
+            "commandDescription": "Mostra o ping do bot.",
+            "description": "Meu ping é: **{ping} ms**.",
+            "title": "Pong!"
+        }
+    },
+    "embed": {
+        "footer": "Solicitado por {usuário}"
+    },
+    "error": {
+        "botOwnerOnly": "Você deve ser o proprietário do bot para executar este comando.",
+        "cooldown": "Aguarde {time} segundos antes de usar este comando novamente.",
+        "default": "Ocorreu um erro ao executar o comando.",
+        "defaultInteraction": "Ocorreu um erro ao processar a interação.",
+        "guildOwnerOnly": "Você deve ser o proprietário do servidor para executar este comando.",
+        "invalidArgs": "Arguments invalides. Utilisation correcte : {usage}",
+        "permsOnly": "Você deve ter as seguintes permissões para executar este comando: {perms}",
+        "title": "Erro"
+    },
+    "lang": {
+        "ask": "Selecione o seu idioma no menu abaixo:",
+        "confirm": "Idioma definido como",
+        "selectDefault": "Seleccione o seu idioma:"
+    }
+}

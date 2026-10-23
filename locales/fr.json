@@ -1,0 +1,42 @@
+{
+    "name": "Français",
+    "flag": "🇫🇷",
+    "commands": {
+        "mention": {
+            "0-use": "Pour utiliser cette commande, tapez : `{prefix}mention <role>` ou utilisez la commande slash `/mention` et sélectionnez un rôle. Cette commande mentionnera le rôle spécifié.",
+            "commandDescription": "Mentionne un rôle ping. Commande staff",
+            "invalidRole": "Le rôle spécifié n'est pas valide. Ce n'est pas un role notification.",
+            "noPermission": "Vous n'avez pas la permission de mentionner ce rôle.",
+            "noRole": "Veuillez spécifier un rôle à mentionner. Utilisation correcte : `{prefix}mention <role>`.",
+            "mentionSent": "Mention envoyée avec succès.",
+            "options": {
+                "role": "Rôle à mentionner"
+            },
+            "roleNotFound": "Le rôle spécifié n'existe pas."
+        },
+        "ping": {
+            "0-use": "Pour utiliser cette commande, tapez : `{prefix}ping` ou utilisez la commande slash `/ping`. Cette commande indiquera le ping du bot. Elle n'a besoin d'aucun argument.",
+            "commandDescription": "Affiche le ping du bot.",
+            "description": "Mon ping est de : **{ping} ms**.",
+            "title": "Pong !"
+        }
+    },
+    "embed": {
+        "footer": "Demandé par {user}"
+    },
+    "error": {
+        "botOwnerOnly": "Vous devez être le propriétaire du bot pour exécuter cette commande.",
+        "cooldown": "Veuillez attendre {time} secondes avant de réutiliser cette commande.",
+        "default": "Une erreur est survenue lors de l'exécution de la commande.",
+        "defaultInteraction": "Une erreur est survenue lors du traitement de l'interaction.",
+        "guildOwnerOnly": "Vous devez être le propriétaire du serveur pour exécuter cette commande.",
+        "invalidArgs": "Arguments invalides. Utilisation correcte : {usage}",
+        "permsOnly": "Vous devez avoir les permissions suivantes pour exécuter cette commande : {perms}",
+        "title": "Erreur"
+    },
+    "lang": {
+        "ask": "Veuillez sélectionner votre langue dans le menu ci-dessous :",
+        "confirm": "Langue définie sur",
+        "selectDefault": "Veuiller sélectionner votre langue :"
+    }
+}
