@@ -1,0 +1,802 @@
+# EDUCATIONAL USE ONLY LICENSE
+
+**Version 1.0**
+
+Copyright © 2026 console-x1. All rights reserved.
+
+This Software is publicly available through the Copyright Holder's official repository. Public availability does not constitute a grant of unrestricted rights.
+
+The Software is licensed, not sold.
+
+By accessing, viewing, downloading, cloning, copying, executing, modifying, or otherwise using the Software, you agree to the terms of this License.
+
+If you do not agree to these terms, you may not use the Software except to the extent that such use is independently permitted by applicable law.
+
+---
+
+# 1. Definitions
+
+For the purposes of this License, the following terms have the meanings set forth below.
+
+## 1.1. "Software"
+
+"Software" means the software made available by the Copyright Holder under this License, including, without limitation:
+
+- source code;
+- object code;
+- binaries;
+- scripts;
+- configuration files;
+- infrastructure definitions;
+- documentation;
+- examples;
+- templates;
+- APIs;
+- libraries;
+- modules;
+- components;
+- assets;
+- tests;
+- build files;
+- deployment files;
+- and any other material distributed as part of the Software.
+
+"Software" also includes any modified version, derivative work, adaptation, port, translation, or substantial portion of the foregoing, to the extent such material is based upon or incorporates copyrightable material from the Software.
+
+---
+
+## 1.2. "Educational Purpose"
+
+"Educational Purpose" means a genuine activity whose primary purpose is to study, learn, teach, demonstrate, experiment with, analyze, or evaluate software, programming, computer science, software engineering, system administration, cybersecurity, architecture, APIs, infrastructure, or related technical concepts.
+
+Educational Purposes include, without limitation:
+
+- studying and reading the source code;
+- analyzing the implementation of the Software;
+- understanding its architecture;
+- studying its algorithms;
+- studying its APIs;
+- studying its dependencies;
+- studying its protocols;
+- studying its security properties;
+- studying its design decisions;
+- explaining the Software to students or learners;
+- demonstrating the Software;
+- using the Software as teaching material;
+- using the Software during a course;
+- using the Software during a workshop;
+- using the Software during a laboratory exercise;
+- creating exercises based on the Software;
+- completing exercises based on the Software;
+- modifying the Software as part of an exercise;
+- debugging the Software;
+- intentionally introducing errors or vulnerabilities for educational purposes;
+- fixing errors or vulnerabilities;
+- replacing components;
+- removing components;
+- migrating away from the Software;
+- migrating to the Software;
+- reproducing a real-world technical scenario;
+- simulating a production environment;
+- testing deployment procedures;
+- testing migration procedures;
+- testing upgrade procedures;
+- testing rollback procedures;
+- testing failure and recovery procedures;
+- testing integrations;
+- benchmarking;
+- conducting technical experiments;
+- comparing the Software with other technologies;
+- creating educational demonstrations;
+- creating examinations or assignments;
+- creating technical training exercises.
+
+An activity does not cease to be an Educational Purpose merely because it uses realistic infrastructure, realistic data structures, production-like environments, real-world scenarios, or professional development techniques.
+
+---
+
+## 1.3. "Commercial Purpose"
+
+"Commercial Purpose" means any purpose intended, directly or indirectly, to obtain or facilitate:
+
+- revenue;
+- profit;
+- financial compensation;
+- commercial advantage;
+- business advantage;
+- customer value;
+- operational value;
+- cost savings;
+- economic benefit;
+- or the provision of a commercial product or service.
+
+An activity may constitute a Commercial Purpose even if the Software itself is provided free of charge.
+
+The absence of a direct payment for the Software does not make an otherwise commercial use permitted.
+
+---
+
+## 1.4. "Production Use"
+
+"Production Use" means using the Software in an environment or system that performs actual operational, business, customer-facing, organizational, or service-providing functions.
+
+Production Use includes, without limitation:
+
+- operating a live application;
+- operating a customer-facing application;
+- operating an operational API;
+- operating production infrastructure;
+- operating internal business infrastructure;
+- processing actual business operations;
+- providing functionality to actual users;
+- supporting a real organization or business;
+- using the Software as part of a live service;
+- using the Software for actual operational workloads.
+
+---
+
+## 1.5. "Deployment"
+
+"Deployment" means installing, configuring, hosting, operating, publishing, or otherwise placing the Software into an environment for actual operational use.
+
+Temporary deployment performed solely for an Educational Purpose is not considered prohibited Deployment.
+
+Examples of permitted temporary deployment include:
+
+- laboratory deployment;
+- classroom deployment;
+- testing deployment;
+- demonstration deployment;
+- simulated production deployment;
+- migration exercises;
+- integration exercises;
+- benchmarking environments;
+- security exercises;
+- failure-recovery exercises.
+
+---
+
+## 1.6. "Service"
+
+"Service" means any product, service, hosted application, SaaS, API, platform, consulting activity, managed service, support service, integration service, or other offering that uses, incorporates, depends upon, is derived from, or materially benefits from the Software.
+
+A Service may be provided directly or indirectly.
+
+---
+
+## 1.7. "Distribution"
+
+"Distribution" means providing, transferring, publishing, uploading, sharing, sublicensing, selling, renting, leasing, or otherwise making the Software or a substantial portion of it available to another person or entity.
+
+Distribution does not include ordinary access to, viewing of, or cloning from the Copyright Holder's official public repository.
+
+---
+
+## 1.8. "Official Public Repository"
+
+"Official Public Repository" means a repository or other public distribution location expressly designated by the Copyright Holder as an official source for the Software.
+
+The Copyright Holder may change the Official Public Repository at any time.
+
+---
+
+# 2. License Grant
+
+Subject to the terms and conditions of this License, the Copyright Holder grants you a limited, non-exclusive, non-transferable, non-sublicensable license to use the Software **solely for Educational Purposes**.
+
+For an Educational Purpose, you may:
+
+1. view the Software;
+2. read the source code;
+3. download the Software;
+4. clone the Software from the Official Public Repository;
+5. copy the Software;
+6. execute the Software;
+7. modify the Software;
+8. create derivative works;
+9. create temporary deployments;
+10. create laboratory environments;
+11. create production-like simulations;
+12. create educational exercises;
+13. provide copies to students or participants;
+14. create educational forks;
+15. create educational branches;
+16. demonstrate the Software;
+17. analyze the Software;
+18. test the Software;
+19. break, repair, replace, migrate, or remove components of the Software as part of an educational exercise.
+
+No rights are granted beyond those expressly stated in this License.
+
+---
+
+# 3. Public Availability of the Software
+
+The Copyright Holder may publish the Software through an Official Public Repository.
+
+The Software may therefore be publicly accessible, viewable, downloadable, and clonable.
+
+Public accessibility does **not** mean that the Software is released under an open-source license or that unrestricted use is permitted.
+
+Access to the Official Public Repository is permitted.
+
+Using the Software obtained from the Official Public Repository is permitted only in accordance with this License.
+
+The following principle applies:
+
+> **Public access to the code does not imply unrestricted rights to use the code.**
+
+The Copyright Holder retains all rights not expressly granted by this License.
+
+---
+
+# 4. Educational Use
+
+The Software may be used for genuine Educational Purposes.
+
+Educational use may occur:
+
+- individually;
+- in a classroom;
+- in a university;
+- in a school;
+- in a workshop;
+- in a training program;
+- in a laboratory;
+- in a study group;
+- in a private learning environment;
+- in an academic research environment;
+- in an educational organization;
+- or in another environment where the primary purpose is education or learning.
+
+The Software may be used as a real technical subject rather than merely as theoretical material.
+
+For example, a student may:
+
+1. inspect the source code;
+2. run the Software;
+3. identify how it works;
+4. identify its dependencies;
+5. identify its APIs;
+6. modify it;
+7. break it;
+8. debug it;
+9. remove it;
+10. migrate away from it;
+11. replace it;
+12. simulate its deployment;
+13. document the process.
+
+All of these activities may constitute permitted Educational Purposes.
+
+---
+
+# 5. Practical and Realistic Educational Exercises
+
+The Copyright Holder expressly permits practical exercises based on real-world software engineering and infrastructure scenarios.
+
+Such exercises may include:
+
+- deploying the Software in a laboratory;
+- simulating a production environment;
+- configuring the Software;
+- integrating the Software with another system;
+- migrating from the Software;
+- migrating to the Software;
+- replacing the Software;
+- removing the Software;
+- decommissioning the Software;
+- debugging the Software;
+- intentionally breaking the Software;
+- recovering from failures;
+- testing upgrades;
+- testing rollbacks;
+- testing deployment procedures;
+- analyzing system architecture;
+- analyzing APIs;
+- analyzing security properties;
+- performing interoperability tests;
+- benchmarking;
+- recreating realistic infrastructure;
+- performing controlled experiments.
+
+The fact that an exercise resembles professional work does not, by itself, make it prohibited.
+
+However, the exercise must remain genuinely educational.
+
+---
+
+# 6. Production and Operational Use
+
+Production Use is strictly prohibited.
+
+You may not use the Software to operate:
+
+- a live website;
+- a live application;
+- a live API;
+- a customer-facing service;
+- a production server;
+- an operational database;
+- business infrastructure;
+- organizational infrastructure;
+- customer infrastructure;
+- an actual commercial workload;
+- an actual operational workload.
+
+The Software may not be used as an operational component of any real system.
+
+This restriction applies regardless of whether the system itself is commercial.
+
+---
+
+# 7. Production-Like Simulation
+
+Production-like environments are permitted when used solely for an Educational Purpose.
+
+You may simulate:
+
+- production deployment;
+- cloud deployment;
+- CI/CD;
+- infrastructure;
+- scaling;
+- networking;
+- system migration;
+- system replacement;
+- disaster recovery;
+- rollback;
+- monitoring;
+- security incidents;
+- system failures;
+- decommissioning.
+
+Such environments must remain educational, experimental, or simulated.
+
+A temporary educational deployment may not be converted into an actual production system without obtaining separate written permission from the Copyright Holder.
+
+---
+
+# 8. Commercial Use
+
+Commercial Use is prohibited.
+
+You may not use the Software, directly or indirectly, for a Commercial Purpose.
+
+This includes, without limitation:
+
+- using the Software in a commercial product;
+- using the Software in a commercial service;
+- using the Software in a business operation;
+- using the Software for a customer;
+- using the Software to perform paid work;
+- using the Software to provide professional services;
+- using the Software as part of a company's infrastructure;
+- using the Software to generate revenue;
+- using the Software to reduce business operating costs;
+- using the Software to obtain a business advantage;
+- using the Software to provide value to customers.
+
+---
+
+# 9. Resale
+
+You may not sell, resell, rent, lease, sublicense, or otherwise monetize the Software.
+
+This includes:
+
+- selling the Software;
+- selling copies;
+- selling modified copies;
+- selling access;
+- selling licenses;
+- bundling the Software into a paid product;
+- bundling the Software into a paid service;
+- monetizing access to the Software;
+- charging specifically for access to the Software.
+
+You may not use the Software as a component of a product or offering whose commercial value substantially depends upon the Software.
+
+---
+
+# 10. Services Based on the Software
+
+You may not use the Software to provide a Service.
+
+This restriction applies whether the Service:
+
+- directly executes the Software;
+- incorporates the Software;
+- embeds the Software;
+- uses a modified version;
+- uses a derivative work;
+- exposes functionality through an API;
+- wraps the Software;
+- places the Software behind another application;
+- uses the Software as infrastructure;
+- uses the Software internally to provide a service;
+- uses the Software to perform work for customers.
+
+For avoidance of doubt:
+
+> **Wrapping the Software in another application, API, SaaS platform, container, abstraction layer, library, or service does not remove the restrictions of this License.**
+
+A Service may be prohibited even when the Software itself is never directly exposed to the end user.
+
+---
+
+# 11. Indirect Use
+
+The restrictions of this License apply to direct and indirect use.
+
+You may not circumvent the restrictions by:
+
+- wrapping the Software;
+- modifying the Software;
+- extracting functionality;
+- embedding functionality;
+- exposing an API;
+- creating an abstraction layer;
+- using the Software as a backend;
+- using the Software as infrastructure;
+- incorporating the Software into another system;
+- using the Software through another program;
+- using only selected components;
+- changing the Software's name;
+- changing its interface;
+- compiling the Software;
+- converting the Software into another format.
+
+The substance and purpose of the activity shall determine whether the use is permitted.
+
+---
+
+# 12. Distribution
+
+The Software may be obtained directly from the Official Public Repository.
+
+You may:
+
+- view the official repository;
+- clone the official repository;
+- download the Software from the official repository;
+- provide access to the official repository to others.
+
+Except as expressly permitted by this License, you may not redistribute the Software.
+
+Prohibited redistribution includes:
+
+- publishing the Software in another public repository;
+- publishing a mirror;
+- uploading the Software to another source-code platform;
+- publishing downloadable archives;
+- publishing packages containing the Software;
+- publishing containers containing the Software;
+- publishing the Software on another website;
+- distributing the Software through file-sharing platforms;
+- distributing the Software through torrents;
+- redistributing the Software under another license;
+- incorporating the Software into another publicly distributed project.
+
+---
+
+# 13. Educational Distribution
+
+Distribution is permitted when reasonably necessary for an Educational Purpose.
+
+For example, an instructor may provide copies of the Software to students for:
+
+- assignments;
+- laboratories;
+- exercises;
+- workshops;
+- examinations;
+- demonstrations;
+- training;
+- practical classes.
+
+The recipient must be informed that the Software is subject to this License.
+
+The recipient may not receive broader rights than those granted by this License.
+
+Educational distribution must not be used to circumvent the restrictions on commercial use, production use, resale, or Services.
+
+---
+
+# 14. Educational Forks
+
+Students, teachers, instructors, researchers, and other participants may create forks, branches, or copies of the Software when reasonably necessary for an Educational Purpose.
+
+Educational forks may be:
+
+- modified;
+- experimented with;
+- broken;
+- repaired;
+- tested;
+- migrated;
+- replaced;
+- used in laboratory environments.
+
+An educational fork may be shared with participants of the relevant Educational Purpose.
+
+However, the fork remains subject to this License.
+
+Creating a fork does not grant the fork owner a new or broader license.
+
+---
+
+# 15. Public Forks
+
+A public fork of the Software does not acquire unrestricted rights merely because the original repository is public.
+
+A public fork containing the Software remains subject to this License.
+
+You may not use a public fork to:
+
+- remove this License;
+- replace this License with a more permissive license;
+- grant commercial rights;
+- grant production rights;
+- grant unrestricted redistribution rights;
+- enable resale;
+- provide a Service;
+- circumvent any restriction of this License.
+
+Where technically possible, a public fork should retain the original copyright and license notices.
+
+---
+
+# 16. Modifications and Derivative Works
+
+You may modify the Software for an Educational Purpose.
+
+Permitted modifications include:
+
+- refactoring;
+- changing APIs;
+- changing architecture;
+- replacing dependencies;
+- adding functionality;
+- removing functionality;
+- fixing bugs;
+- introducing intentional bugs;
+- changing configuration;
+- porting the Software;
+- adapting the Software for an exercise.
+
+Modified versions remain subject to this License to the extent that they contain or derive from the Software.
+
+Modification does not grant any commercial, operational, production, resale, or service rights.
+
+---
+
+# 17. Educational Materials
+
+You may include reasonable portions of the Software in:
+
+- slides;
+- course materials;
+- assignments;
+- exercises;
+- tutorials;
+- demonstrations;
+- examinations;
+- documentation;
+- educational videos;
+- educational presentations.
+
+Such inclusion must be reasonably necessary for an Educational Purpose.
+
+Where reasonably practicable, educational materials should identify the Software and reference the Official Public Repository and this License.
+
+---
+
+# 18. Paid Educational Activities
+
+The Software may be used in educational activities for which participants pay tuition or fees, provided that the actual use of the Software is genuinely educational.
+
+For example, the following may be permitted:
+
+- a university course;
+- a paid programming course;
+- a paid technical workshop;
+- a paid training session;
+- a bootcamp;
+- a professional education course.
+
+However, the Software may not be used as an operational component of the provider's business.
+
+For example, an educational organization may teach students how to deploy the Software, but may not use the Software to operate its own production infrastructure merely because the organization is educational.
+
+---
+
+# 19. Research
+
+Academic and educational research may constitute an Educational Purpose.
+
+Research conducted primarily for:
+
+- commercial product development;
+- commercial R&D;
+- business operations;
+- customer services;
+- commercial optimization;
+
+is not considered an Educational Purpose.
+
+---
+
+# 20. No Circumvention
+
+You may not circumvent or attempt to circumvent any restriction contained in this License.
+
+Circumvention includes intentionally restructuring the use of the Software so that it technically avoids a particular restriction while achieving substantially the same prohibited result.
+
+For example, the following does not make an otherwise prohibited use permitted:
+
+- placing the Software behind an API;
+- putting the Software inside a container;
+- modifying the source code;
+- extracting selected functionality;
+- creating a wrapper;
+- creating an abstraction layer;
+- using another application to execute the Software;
+- using an intermediary service.
+
+---
+
+# 21. No Implied Rights
+
+No rights are granted by implication, estoppel, exhaustion, or otherwise except those expressly granted by this License.
+
+In particular, public availability of the Software does not grant:
+
+- commercial rights;
+- production rights;
+- professional-use rights;
+- resale rights;
+- sublicensing rights;
+- unrestricted distribution rights;
+- Service rights.
+
+---
+
+# 22. Ownership and Copyright
+
+The Software is licensed, not sold.
+
+The Copyright Holder retains all rights, title, and interest in and to the Software, including all intellectual property rights not expressly granted by this License.
+
+No ownership interest is transferred by this License.
+
+---
+
+# 23. Third-Party Components
+
+The Software may contain components that are subject to separate licenses.
+
+Those components remain subject to their respective licenses.
+
+Nothing in this License is intended to restrict rights that are independently granted by a third-party license or that cannot legally be restricted.
+
+---
+
+# 24. Compliance by Recipients
+
+If you provide the Software to another person for an Educational Purpose, you must inform that person that:
+
+1. the Software is subject to this License;
+2. commercial use is prohibited;
+3. Production Use is prohibited;
+4. resale is prohibited;
+5. Services based on the Software are prohibited;
+6. redistribution is restricted;
+7. the Software may only be used for an Educational Purpose.
+
+---
+
+# 25. Termination
+
+This License automatically terminates upon a material breach of its terms.
+
+Upon termination, you must immediately cease using the Software.
+
+You must also delete copies of the Software in your possession or control where reasonably practicable and legally permissible.
+
+Termination does not limit any other rights or remedies available to the Copyright Holder.
+
+---
+
+# 26. Separate Commercial License
+
+The Copyright Holder may grant additional rights through a separate written agreement.
+
+Such an agreement may authorize:
+
+- commercial use;
+- Production Use;
+- professional use;
+- Services;
+- redistribution;
+- resale;
+- other uses prohibited by this License.
+
+Unless expressly stated otherwise in such an agreement, this License remains applicable.
+
+---
+
+# 27. No Warranty
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW.
+
+THE COPYRIGHT HOLDER DISCLAIMS ALL WARRANTIES, INCLUDING, WITHOUT LIMITATION, WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, NON-INFRINGEMENT, ACCURACY, AND RELIABILITY.
+
+---
+
+# 28. Limitation of Liability
+
+TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, THE COPYRIGHT HOLDER SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, EXEMPLARY, OR PUNITIVE DAMAGES ARISING FROM OR RELATING TO THE SOFTWARE OR THIS LICENSE.
+
+NOTHING IN THIS LICENSE SHALL EXCLUDE OR LIMIT LIABILITY TO THE EXTENT SUCH LIABILITY CANNOT LAWFULLY BE EXCLUDED OR LIMITED.
+
+---
+
+# 29. Interpretation
+
+This License is intended to permit genuine educational use while preventing commercial, professional, operational, production, resale, redistribution, and service-based exploitation of the Software.
+
+Where an activity contains both educational and non-educational elements, the overall purpose and substance of the activity shall be considered.
+
+An educational component does not automatically make an otherwise prohibited activity an Educational Purpose.
+
+For example, the following remain prohibited:
+
+- using the Software in production while training employees on it;
+- using the Software for a customer while teaching employees how it works;
+- using the Software commercially while conducting occasional demonstrations;
+- using the Software in a commercial product and providing educational documentation;
+- using the Software to provide a paid service while describing the service as educational;
+- deploying the Software operationally and characterizing the deployment as a practical exercise.
+
+The educational purpose must be genuine and primary.
+
+---
+
+# 30. Applicable Law
+
+This License shall be governed by the laws of [JURISDICTION], without regard to conflict-of-law principles, except to the extent mandatory applicable law provides otherwise.
+
+Any dispute arising out of or relating to this License shall be subject to the jurisdiction of the competent courts of [JURISDICTION], except where applicable law provides otherwise.
+
+---
+
+# 31. Severability
+
+If any provision of this License is determined to be invalid, illegal, or unenforceable, that provision shall be modified or limited to the minimum extent necessary to make it enforceable, where legally permitted.
+
+The remaining provisions shall remain in full force and effect.
+
+---
+
+# 32. Entire Agreement
+
+This License constitutes the entire agreement concerning the licensing of the Software under this License and supersedes prior statements or understandings concerning the same subject matter, except for separate written agreements expressly entered into by the Copyright Holder.
+
+---
+
+# 33. Contact
+
+For licensing questions, commercial licensing requests, or permissions beyond this License:
+
+**Copyright Holder:** console-x1
+
+**Contact:** consolex1@consolex1.com
+
+**Official Repository:** https://github.com/console-x1/SignalRoom
+
+**Website:** [SOON]
+
+---
+
+# END OF LICENSE
