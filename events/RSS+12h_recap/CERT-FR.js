@@ -11,6 +11,12 @@ const RSS_URLS = [
     "https://www.cert.ssi.gouv.fr/alerte/feed/",
     "https://www.cert.ssi.gouv.fr/avis/feed/"
 ];
+const CERT_FR_HOSTS = new Set([
+    "cert.ssi.gouv.fr",
+    "www.cert.ssi.gouv.fr",
+    "cert.cyber.gouv.fr",
+    "www.cert.cyber.gouv.fr"
+]);
 const DB_FILE = path.resolve(__dirname, "..", "..", "database", "sent_CERT-FR.json");
 
 module.exports = {
@@ -77,6 +83,20 @@ function createSnapshot(item) {
     };
 }
 
+function getEntryKey(value) {
+    try {
+        const url = new URL(value);
+        if (CERT_FR_HOSTS.has(url.hostname)) {
+            const pathname = url.pathname.replace(/\/+$/, "");
+            return `https://www.cert.ssi.gouv.fr${pathname}`;
+        }
+    } catch {
+        // RSS identifiers are not necessarily URLs.
+    }
+
+    return value;
+}
+
 function createEmbed(item, snapshot, color) {
     const embed = new EmbedBuilder()
         .setTitle(snapshot.title)
@@ -122,7 +142,11 @@ async function checkRSScertFR(client) {
             }
 
             const snapshot = createSnapshot(item);
-            const previousKey = [entryUrl, item.id].find(key => store.entries[key]);
+            const entryKey = getEntryKey(entryUrl);
+            const previousKey = [entryUrl, item.id]
+                .map(getEntryKey)
+                .map(key => Object.keys(store.entries).find(storedKey => getEntryKey(storedKey) === key))
+                .find(Boolean);
             const entry = previousKey ? store.entries[previousKey] : null;
 
             if (!entry) {
@@ -136,7 +160,7 @@ async function checkRSScertFR(client) {
                     allowedMentions: { roles: isAlert && roleId ? [roleId] : [] }
                 });
 
-                store.entries[entryUrl] = {
+                store.entries[entryKey] = {
                     url: entryUrl,
                     firstSeenAt: snapshot.detectedAt,
                     versions: [snapshot]
@@ -148,6 +172,14 @@ async function checkRSScertFR(client) {
                 }
 
                 await new Promise(resolve => setTimeout(resolve, 800));
+            } else if (!entry.versions.length) {
+                entry.url = entryUrl;
+                entry.versions.push(snapshot);
+                if (previousKey !== entryKey) {
+                    delete store.entries[previousKey];
+                    store.entries[entryKey] = entry;
+                }
+                saveStore(store);
             } else if (entry.versions.at(-1).hash !== snapshot.hash) {
                 const embed = createEmbed(item, snapshot, 0x5865F2);
 
@@ -159,9 +191,9 @@ async function checkRSScertFR(client) {
 
                 entry.url = entryUrl;
                 entry.versions.push(snapshot);
-                if (previousKey !== entryUrl) {
+                if (previousKey !== entryKey) {
                     delete store.entries[previousKey];
-                    store.entries[entryUrl] = entry;
+                    store.entries[entryKey] = entry;
                 }
                 saveStore(store);
                 console.log(`[CERT-FR] 🔄 Update: ${snapshot.title} - ${entryUrl}`.blue);
