@@ -81,8 +81,14 @@ function createSnapshot(item) {
         ...version,
         publishedAt,
         detectedAt: new Date().toISOString(),
-        hash: crypto.createHash("sha256").update(JSON.stringify(version)).digest("hex")
+        hash: hashSnapshot(version)
     };
+}
+
+function hashSnapshot(snapshot) {
+    const title = snapshot.title.replace(/^\s*\[(?:màj|update)\]\s*/i, "").trim();
+    const version = { title, description: snapshot.description, publishedAt: snapshot.publishedAt };
+    return crypto.createHash("sha256").update(JSON.stringify(version)).digest("hex");
 }
 
 async function translateToEnglish(text) {
@@ -264,7 +270,7 @@ async function checkRSScertFR(client) {
                     store.entries[entryKey] = entry;
                 }
                 saveStore(store);
-            } else if (entry.versions.at(-1).hash !== snapshot.hash) {
+            } else if (hashSnapshot(entry.versions.at(-1)) !== snapshot.hash) {
                 let translatedSnapshot = snapshot;
                 try {
                     translatedSnapshot = await translateSnapshot(snapshot);
