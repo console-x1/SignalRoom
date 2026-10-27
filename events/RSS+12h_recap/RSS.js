@@ -4,7 +4,7 @@ const { cleanText, isFresh } = require('../../utils/RSSutils.js')
 const { generateHash, isDuplicate } = require('../../utils/RSSdeduplicator.js')
 
 const Parser = require("rss-parser");
-const parser = new Parser();
+const parser = new Parser({ timeout: 15000 });
 
 const axios = require('axios')
 const cron = require("node-cron");
@@ -30,7 +30,7 @@ async function processSource(source, client) {
   try {
     feed = await parser.parseURL(source.url);
   } catch (err) {
-    console.error(`Error fetching RSS for ${source.name}:`, err.message);
+    console.error(`[NEWS-RSS] Échec du flux ${source.name} (${source.url}):`, err);
     return;
   }
 
