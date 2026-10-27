@@ -9,11 +9,6 @@ module.exports = {
         const guilds = client.guilds.cache;
         for (const guild of guilds.values()) {
             await db.insertOrIgnore("guilds", { guildId: guild.id, prefix: client.config.prefix });
-            const members = await guild.members.fetch();
-            for (const member of members.values()) {
-                if (member.user.bot) continue;
-                await db.insertOrIgnore("users", { userId: member.id, guildId: guild.id });
-            }
         }
     }
 }

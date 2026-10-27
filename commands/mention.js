@@ -10,7 +10,7 @@ module.exports = {
     botOwnerOnly: false,
 
     async execute(client, message, args, langue) {
-        if (!client.guilds.cache.get(message.guild.id).members.cache.get(message.author.id).roles.cache.has('1478200663484665907') && !client.config.channels.newsCategory.includes(message.channel.id))
+        if (!message.member?.roles.cache.has('1478200663484665907') && !client.config.channels.newsCategory.includes(message.channel.id))
             return message.reply({ content: langue.commands.mention.noPermission }).catch(() => { });
 
         if (!args[0])

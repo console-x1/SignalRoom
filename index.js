@@ -1,4 +1,4 @@
-const { Client, Collection, GatewayIntentBits, Partials, ActivityType } = require("discord.js");
+const { Client, Collection, GatewayIntentBits, ActivityType, Options } = require("discord.js");
 const colors = require("colors");
 const fs = require("fs");
 const path = require("path");
@@ -6,8 +6,17 @@ const path = require("path");
 
 
 const client = new Client({
-    intents: [ GatewayIntentBits.Guilds, GatewayIntentBits.GuildModeration, GatewayIntentBits.GuildExpressions, GatewayIntentBits.GuildIntegrations, GatewayIntentBits.GuildWebhooks, GatewayIntentBits.GuildInvites, GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.GuildMessageReactions, GatewayIntentBits.GuildMessageTyping, GatewayIntentBits.DirectMessages, GatewayIntentBits.DirectMessageReactions, GatewayIntentBits.DirectMessageTyping, GatewayIntentBits.GuildScheduledEvents, GatewayIntentBits.GuildPresences, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent ],
-    partials: [ Partials.Channel, Partials.GuildMember, Partials.GuildScheduledEvent, Partials.Message, Partials.Reaction, Partials.ThreadMember, Partials.User ],
+    intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent],
+    makeCache: Options.cacheWithLimits({
+        ...Options.DefaultMakeCacheSettings,
+        MessageManager: 50,
+        GuildMemberManager: {
+            maxSize: 100,
+            keepOverLimit: member => member.id === member.guild.client.user?.id
+        },
+        UserManager: 1000,
+        ReactionManager: 0
+    }),
     restTimeOffset: 0,
     failIfNotExists: false,
     presence: {

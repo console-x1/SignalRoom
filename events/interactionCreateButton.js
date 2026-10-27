@@ -17,12 +17,10 @@ module.exports = {
                 const selectedLang = interaction.values[0];
                 if (selectedLang === "__default__") return;
 
-                let originalMessage = await interaction.channel.messages.fetch(
-                    interaction.message.reference?.messageId
-                )?.author?.id.catch(() => null);
-                if (!originalMessage) originalMessage = interaction.user.id;
-
-                await db.update("users", { lang: selectedLang }, { userId: interaction.user.id, guildId: interaction.guild.id });
+                await db.exec(
+                    "INSERT INTO users (userId, guildId, lang) VALUES (?, ?, ?) ON CONFLICT(guildId, userId) DO UPDATE SET lang = excluded.lang",
+                    [interaction.user.id, interaction.guild.id, selectedLang]
+                );
 
                 await interaction.update({
                     content: `${loadLocale(selectedLang).lang.confirm} **${selectedLang.toUpperCase()}**.`,
