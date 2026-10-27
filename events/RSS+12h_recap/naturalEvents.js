@@ -2,6 +2,8 @@ const { EmbedBuilder, AttachmentBuilder } = require("discord.js");
 const cron = require("node-cron");
 const colors = require("colors");
 
+const SOURCE_TIMEOUT_MS = 15000;
+
 module.exports = {
     async execute(client, startTime) {
         await sendNaturalEventsAlert(client);
@@ -17,10 +19,15 @@ module.exports = {
 async function sendNaturalEventsAlert(client) {
     try {
         const { eonet, usgs, firms } = await fetchAllEvents(client);
+        const successfulSources = [eonet, usgs, firms].filter(source => source !== null).length;
+        if (successfulSources === 0) {
+            console.error("[NATURELS] Aucune source de données n'a répondu; alerte ignorée.");
+            return;
+        }
 
-        const eonetEvents = await processEONET(eonet);
-        const usgsEvents = await processUSGS(usgs);
-        const firmsEvents = await processFIRMS(parseCSV(firms));
+        const eonetEvents = await processEONET(eonet || {});
+        const usgsEvents = await processUSGS(usgs || {});
+        const firmsEvents = await processFIRMS(firms === null ? [] : parseCSV(firms));
 
         const allFiltered = [
             ...eonetEvents.filtered,
@@ -62,17 +69,47 @@ async function sendNaturalEventsAlert(client) {
 // =======================
 
 async function fetchAllEvents(client) {
-    const eonet = await fetch("https://eonet.gsfc.nasa.gov/api/v3/events?status=open")
-        .then(r => r.json());
-
-    const usgs = await fetch("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson")
-        .then(r => r.json());
-
-    const firms = await fetch(
-        `https://firms.modaps.eosdis.nasa.gov/api/area/csv/${client.config.api.firms}/VIIRS_SNPP_NRT/world/2`
-    ).then(r => r.text());
+    const [eonet, usgs, firms] = await Promise.all([
+        fetchSource(
+            "EONET",
+            "https://eonet.gsfc.nasa.gov/api/v3/events?status=open",
+            "json",
+            data => Array.isArray(data.events)
+        ),
+        fetchSource(
+            "USGS",
+            "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson",
+            "json",
+            data => Array.isArray(data.features)
+        ),
+        fetchSource(
+            "FIRMS",
+            `https://firms.modaps.eosdis.nasa.gov/api/area/csv/${client.config.api.firms}/VIIRS_SNPP_NRT/world/2`,
+            "text",
+            text => text.trim().length > 0
+        )
+    ]);
 
     return { eonet, usgs, firms };
+}
+
+async function fetchSource(name, url, responseType, isValid) {
+    try {
+        const response = await fetch(url, { signal: AbortSignal.timeout(SOURCE_TIMEOUT_MS) });
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+
+        const data = await response[responseType]();
+        if (!isValid(data)) {
+            throw new Error("réponse invalide");
+        }
+        return data;
+    } catch (error) {
+        const reason = error.cause?.code || error.message;
+        console.error(`[NATURELS] Source ${name} indisponible: ${reason}`);
+        return null;
+    }
 }
 
 // =======================
@@ -156,7 +193,7 @@ async function processUSGS(data) {
 async function processFIRMS(data) {
     let raw = [];
 
-    if (!data || !Array.isArray(data)) return { filtered: kept };
+    if (!data || !Array.isArray(data)) return { filtered: raw };
     for (const f of data) {
         const frp = parseFloat(f.frp);
         const lat = parseFloat(f.latitude);
@@ -329,22 +366,26 @@ function computeScore(frp, count) {
 }
 
 async function reverseGeocode(lat, lon) {
-    const res = await fetch(
-        `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`
-    );
-
     try {
+        const res = await fetch(
+            `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`,
+            { signal: AbortSignal.timeout(5000) }
+        );
+        if (!res.ok) {
+            throw new Error(`HTTP ${res.status}`);
+        }
         const data = await res.json();
         return {
             city: data.city,
             principalSubdivision: data.principalSubdivision,
             countryName: data.countryName
         };
-    } catch {
+    } catch (error) {
+        console.error(`[NATURELS] Géolocalisation indisponible pour ${lat},${lon}: ${error.cause?.code || error.message}`);
         return {
-            city: 'Unknown',
-            principalSubdivision: 'Unknown',
-            countryName: 'Unknown'
+            city: '',
+            principalSubdivision: '',
+            countryName: ''
         }
     }
 }
