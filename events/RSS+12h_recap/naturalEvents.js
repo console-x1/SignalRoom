@@ -333,11 +333,18 @@ async function reverseGeocode(lat, lon) {
         `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`
     );
 
-    const data = await res.json();
-
-    return {
-        city: data.city,
-        principalSubdivision: data.principalSubdivision,
-        countryName: data.countryName
-    };
+    try {
+        const data = await res.json();
+        return {
+            city: data.city,
+            principalSubdivision: data.principalSubdivision,
+            countryName: data.countryName
+        };
+    } catch {
+        return {
+            city: 'Unknown',
+            principalSubdivision: 'Unknown',
+            countryName: 'Unknown'
+        }
+    }
 }

@@ -26,44 +26,51 @@ module.exports = {
 
 
 async function processSource(source, client) {
+  let feed;
   try {
-    const feed = await parser.parseURL(source.url);
+    feed = await parser.parseURL(source.url);
+  } catch (err) {
+    console.error(`Error fetching RSS for ${source.name}:`, err.message);
+    return;
+  }
 
-    const embeds = []
-    for (const item of feed.items) {
-      const text = cleanText(item);
+  const embeds = []
+  for (const item of feed.items) {
+    const text = cleanText(item);
 
-      if (!text) continue;
-      if (!isFresh(item, 30)) continue;
+    if (!text) continue;
+    if (!isFresh(item, 30)) continue;
 
-      const hash = generateHash(text);
+    const hash = generateHash(text);
 
-      if (isDuplicate(hash)) continue;
+    if (isDuplicate(hash)) continue;
 
-      const score = scoreArticle(text, source.weight);
-      if (score < SCORE_THRESHOLD) continue;
+    const score = scoreArticle(text, source.weight);
+    if (score < SCORE_THRESHOLD) continue;
 
-      const event = {
-        source: source.name ?? "Unknown",
-        title: item.title,
-        link: item.link,
-        published: item.isoDate,
-        score
-      };
-      embeds.push({
-        title: `${event.title}`,
-        description: `[Read here](${event.link}) - source : ${event.source} - score : ${event.score} - published : <t:${Number(new Date(event.published)) / 1000}:R>`,
-        url: event.link,
-        color: 0x00AAFF,
-      });
-    }
+    const event = {
+      source: source.name ?? "Unknown",
+      title: item.title,
+      link: item.link,
+      published: item.isoDate,
+      score
+    };
+    embeds.push({
+      title: `${event.title}`,
+      description: `[Read here](${event.link}) - source : ${event.source} - score : ${event.score} - published : <t:${Number(new Date(event.published)) / 1000}:R>`,
+      url: event.link,
+      color: 0x00AAFF,
+    });
+  }
+
+  if (embeds.length === 0) return;
+
+  try {
     await axios.post(client.config.RSS.discordWebhook, {
       embeds
     });
-
   } catch (err) {
-    if (err.message == 'Request failed with status code 400') return;
-    console.error(`Error with ${source.name}:`, err.message);
+    console.error(`Error sending ${source.name} RSS to Discord:`, err.message);
   }
 }
 

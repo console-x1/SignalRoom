@@ -1,4 +1,5 @@
 const { EmbedBuilder } = require("discord.js");
+const axios = require("axios");
 const crypto = require("crypto");
 const fs = require("fs");
 const path = require("path");
@@ -18,6 +19,7 @@ const CERT_FR_HOSTS = new Set([
     "www.cert.cyber.gouv.fr"
 ]);
 const DB_FILE = path.resolve(__dirname, "..", "..", "database", "sent_CERT-FR.json");
+const TRANSLATION_SEPARATOR = "__CERT_FR_DESCRIPTION_SEPARATOR__";
 
 module.exports = {
     async execute(client, startTime) {
@@ -67,8 +69,8 @@ function saveStore(store) {
 }
 
 function createSnapshot(item) {
-    const title = (item.title || "Sans titre").replace("Màj", "Update");
-    const description = item.contentSnippet || item.content || item.summary || "No description available.";
+    const title = item.title || "Sans titre";
+    const description = item.contentSnippet || item.content || item.summary || "Aucune description disponible.";
     const publishedDate = item.isoDate || item.pubDate;
     const publishedAt = publishedDate && !Number.isNaN(new Date(publishedDate).getTime())
         ? new Date(publishedDate).toISOString()
@@ -80,6 +82,82 @@ function createSnapshot(item) {
         publishedAt,
         detectedAt: new Date().toISOString(),
         hash: crypto.createHash("sha256").update(JSON.stringify(version)).digest("hex")
+    };
+}
+
+async function translateToEnglish(text) {
+    const providers = [
+        async () => {
+            const response = await axios.get(
+                "https://api.mymemory.translated.net/get",
+                {
+                    params: { q: text, langpair: "fr|en" },
+                    timeout: 10000
+                }
+            );
+            return response.data.responseData.translatedText;
+        },
+        async () => {
+            const response = await axios.post(
+                "https://libretranslate.de/translate",
+                { q: text, source: "fr", target: "en", format: "text" },
+                { timeout: 10000 }
+            );
+            return response.data.translatedText;
+        },
+        async () => {
+            const response = await axios.get(
+                `https://lingva.ml/api/v1/fr/en/${encodeURIComponent(text)}`,
+                { timeout: 10000 }
+            );
+            return response.data.translation;
+        },
+        async () => {
+            const response = await axios.get(
+                "https://simplytranslate.org/api/translate",
+                {
+                    params: { engine: "google", text, from: "fr", to: "en" },
+                    timeout: 10000
+                }
+            );
+            return response.data.translated_text;
+        }
+    ];
+    const errors = [];
+
+    for (const translate of providers) {
+        try {
+            const translated = await translate();
+            if (
+                typeof translated === "string" &&
+                translated.trim() &&
+                translated !== text &&
+                translated.includes(TRANSLATION_SEPARATOR)
+            ) {
+                return translated;
+            }
+            errors.push("Le service de traduction a renvoyé un résultat vide ou invalide.");
+        } catch (error) {
+            errors.push(error.message);
+        }
+    }
+
+    throw new Error(`Tous les services de traduction ont échoué : ${errors.join(" ; ")}`);
+}
+
+async function translateSnapshot(snapshot) {
+    const text = `${snapshot.title}\n\n${TRANSLATION_SEPARATOR}\n\n${snapshot.description}`;
+    const translated = await translateToEnglish(text);
+    const separatorIndex = translated.indexOf(TRANSLATION_SEPARATOR);
+
+    if (separatorIndex === -1) {
+        throw new Error("Le séparateur entre le titre et la description a été perdu.");
+    }
+
+    return {
+        ...snapshot,
+        title: translated.slice(0, separatorIndex).trim(),
+        description: translated.slice(separatorIndex + TRANSLATION_SEPARATOR.length).trim()
     };
 }
 
@@ -151,11 +229,17 @@ async function checkRSScertFR(client) {
 
             if (!entry) {
                 const isAlert = entryUrl.includes("/alerte/");
-                const embed = createEmbed(item, snapshot, isAlert ? 0xFF0000 : 0xFFA500);
+                let translatedSnapshot = snapshot;
+                try {
+                    translatedSnapshot = await translateSnapshot(snapshot);
+                } catch (error) {
+                    console.error(`[CERT-FR] Traduction anglaise impossible pour ${entryUrl} :`, error.message);
+                }
+                const embed = createEmbed(item, translatedSnapshot, isAlert ? 0xFF0000 : 0xFFA500);
                 const roleId = client.config.roles.certFR;
 
                 await channel.send({
-                    content: isAlert ? `<@&${roleId}> **🚨 CERT-FR Alert 🚨**` : "**⚠️ CERT-FR Avis ⚠️**",
+                    content: isAlert ? `<@&${roleId}> **🚨 CERT-FR Security Alert 🚨**` : "**⚠️ CERT-FR Security Advisory ⚠️**",
                     embeds: [embed],
                     allowedMentions: { roles: isAlert && roleId ? [roleId] : [] }
                 });
@@ -181,10 +265,16 @@ async function checkRSScertFR(client) {
                 }
                 saveStore(store);
             } else if (entry.versions.at(-1).hash !== snapshot.hash) {
-                const embed = createEmbed(item, snapshot, 0x5865F2);
+                let translatedSnapshot = snapshot;
+                try {
+                    translatedSnapshot = await translateSnapshot(snapshot);
+                } catch (error) {
+                    console.error(`[CERT-FR] Traduction anglaise impossible pour ${entryUrl} :`, error.message);
+                }
+                const embed = createEmbed(item, translatedSnapshot, 0x5865F2);
 
                 await channel.send({
-                    content: "**🔄 Update CERT-FR**",
+                    content: "**🔄 CERT-FR Update**",
                     embeds: [embed],
                     allowedMentions: { parse: [] }
                 });
