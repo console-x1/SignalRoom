@@ -1,72 +1,41 @@
 const { EmbedBuilder } = require("discord.js");
 const axios = require("axios");
-const crypto = require("crypto");
-const fs = require("fs");
-const path = require("path");
 const Parser = require("rss-parser");
 const parser = new Parser();
 const cron = require("node-cron");
 const colors = require("colors");
+const {
+    extractCVEIdentifiers,
+    findDuplicateEntry,
+    hashSnapshot,
+    loadStore,
+    saveStore,
+    withCyberAlertLock
+} = require("../../utils/cyberAlertStore");
 
 const RSS_URLS = [
     "https://www.cert.ssi.gouv.fr/alerte/feed/",
     "https://www.cert.ssi.gouv.fr/avis/feed/"
 ];
+const PAGE_CVE_RECHECK_INTERVAL = 24 * 60 * 60 * 1000;
 const CERT_FR_HOSTS = new Set([
     "cert.ssi.gouv.fr",
     "www.cert.ssi.gouv.fr",
     "cert.cyber.gouv.fr",
     "www.cert.cyber.gouv.fr"
 ]);
-const DB_FILE = path.resolve(__dirname, "..", "..", "database", "sent_CERT-FR.json");
 const TRANSLATION_SEPARATOR = "__CERT_FR_DESCRIPTION_SEPARATOR__";
 
 module.exports = {
     async execute(client, startTime) {
         await checkRSScertFR(client);
-        console.log(`[CYBER---] Cron des alertes CERT-FR activé en ${Number((Date.now() - startTime)/1000).toFixed(2)}s`.green);
+        console.log(`[CYBER-1-] Cron des alertes CERT-FR activé en ${Number((Date.now() - startTime)/1000).toFixed(2)}s`.green);
 
         cron.schedule("0 */5 * * *", async () => {
             await checkRSScertFR(client);
         });
     }
 };
-
-function loadStore() {
-    if (!fs.existsSync(DB_FILE)) {
-        return { version: 1, entries: {} };
-    }
-
-    let stored;
-    try {
-        stored = JSON.parse(fs.readFileSync(DB_FILE, "utf8"));
-    } catch (error) {
-        throw new Error(`Impossible de lire ${DB_FILE}: ${error.message}`);
-    }
-
-    if (Array.isArray(stored)) {
-        const entries = {};
-        for (const url of stored) {
-            if (typeof url !== "string") {
-                throw new Error(`Format invalide dans ${DB_FILE}: les anciennes entrées doivent être des liens.`);
-            }
-            entries[url] = { url, firstSeenAt: null, versions: [] };
-        }
-        return { version: 1, entries };
-    }
-
-    if (stored?.version !== 1 || !stored.entries || typeof stored.entries !== "object" || Array.isArray(stored.entries)) {
-        throw new Error(`Format invalide dans ${DB_FILE}: un journal CERT-FR versionné est attendu.`);
-    }
-
-    return stored;
-}
-
-function saveStore(store) {
-    const temporaryFile = `${DB_FILE}.tmp`;
-    fs.writeFileSync(temporaryFile, JSON.stringify(store, null, 2));
-    fs.renameSync(temporaryFile, DB_FILE);
-}
 
 function createSnapshot(item) {
     const title = item.title || "Sans titre";
@@ -79,16 +48,55 @@ function createSnapshot(item) {
 
     return {
         ...version,
+        vulnerabilityIds: extractCVEIdentifiers(`${title}\n${description}`),
         publishedAt,
         detectedAt: new Date().toISOString(),
         hash: hashSnapshot(version)
     };
 }
 
-function hashSnapshot(snapshot) {
-    const title = snapshot.title.replace(/^\s*\[(?:màj|update)\]\s*/i, "").trim();
-    const version = { title, description: snapshot.description, publishedAt: snapshot.publishedAt };
-    return crypto.createHash("sha256").update(JSON.stringify(version)).digest("hex");
+async function addPageVulnerabilityIds(item, snapshot) {
+    if (snapshot.vulnerabilityIds.length || !item.link) {
+        return snapshot;
+    }
+
+    let pageUrl;
+    try {
+        pageUrl = new URL(item.link);
+    } catch {
+        return snapshot;
+    }
+
+    if (!CERT_FR_HOSTS.has(pageUrl.hostname)) {
+        return snapshot;
+    }
+
+    try {
+        const response = await axios.get(pageUrl.toString(), {
+            timeout: 10000,
+            maxContentLength: 2 * 1024 * 1024,
+            responseType: "text"
+        });
+        return {
+            ...snapshot,
+            vulnerabilityIds: extractCVEIdentifiers(response.data),
+            vulnerabilityIdsAttemptedAt: new Date().toISOString()
+        };
+    } catch (error) {
+        console.error(`[CERT-FR] Impossible de lire les CVE de ${pageUrl}:`, error.message);
+        return {
+            ...snapshot,
+            vulnerabilityIdsAttemptedAt: new Date().toISOString()
+        };
+    }
+}
+
+function hasNewVulnerabilityMetadata(previous, snapshot) {
+    const previousIds = new Set(previous.vulnerabilityIds || []);
+    return (
+        (snapshot.vulnerabilityIds || []).some(id => !previousIds.has(id)) ||
+        previous.vulnerabilityIdsAttemptedAt !== snapshot.vulnerabilityIdsAttemptedAt
+    );
 }
 
 async function translateToEnglish(text) {
@@ -197,10 +205,14 @@ function createEmbed(item, snapshot, color) {
 }
 
 async function checkRSScertFR(client) {
+    return withCyberAlertLock(() => runRSScertFR(client));
+}
+
+async function runRSScertFR(client) {
     try {
-        const channel = await client.channels.fetch(client.config.channels.certFR);
+        const channel = await client.channels.fetch(client.config.channels.cyberSecurity);
         if (!channel) {
-            console.error("Error : certFR channel not found.");
+            console.error("Error : cyberSecurity channel not found.");
             return;
         }
 
@@ -225,15 +237,48 @@ async function checkRSScertFR(client) {
                 continue;
             }
 
-            const snapshot = createSnapshot(item);
+            let snapshot = createSnapshot(item);
             const entryKey = getEntryKey(entryUrl);
             const previousKey = [entryUrl, item.id]
                 .map(getEntryKey)
                 .map(key => Object.keys(store.entries).find(storedKey => getEntryKey(storedKey) === key))
                 .find(Boolean);
             const entry = previousKey ? store.entries[previousKey] : null;
+            const previousVersion = entry?.versions?.at(-1);
+            const previousAttemptAt = Date.parse(previousVersion?.vulnerabilityIdsAttemptedAt || "");
+            const pageCveCheckIsDue = (
+                !previousAttemptAt ||
+                Date.now() - previousAttemptAt >= PAGE_CVE_RECHECK_INTERVAL
+            );
+            if (
+                !snapshot.vulnerabilityIds.length &&
+                (
+                    !previousVersion ||
+                    hashSnapshot(previousVersion) !== snapshot.hash ||
+                    (!previousVersion.vulnerabilityIds?.length && pageCveCheckIsDue)
+                )
+            ) {
+                snapshot = await addPageVulnerabilityIds(item, snapshot);
+            } else if (!snapshot.vulnerabilityIds.length) {
+                snapshot.vulnerabilityIds = previousVersion.vulnerabilityIds || [];
+                snapshot.vulnerabilityIdsAttemptedAt = previousVersion.vulnerabilityIdsAttemptedAt;
+            }
 
             if (!entry) {
+                const duplicateOf = findDuplicateEntry(store, entryKey, "CERT-FR", snapshot);
+                if (duplicateOf) {
+                    store.entries[entryKey] = {
+                        url: entryUrl,
+                        source: "CERT-FR",
+                        duplicateOf,
+                        firstSeenAt: snapshot.detectedAt,
+                        versions: [snapshot]
+                    };
+                    saveStore(store);
+                    console.log(`[CERT-FR] Alerte déjà publiée par une autre source : ${snapshot.title}`);
+                    continue;
+                }
+
                 const isAlert = entryUrl.includes("/alerte/");
                 let translatedSnapshot = snapshot;
                 try {
@@ -242,7 +287,7 @@ async function checkRSScertFR(client) {
                     console.error(`[CERT-FR] Traduction anglaise impossible pour ${entryUrl} :`, error.message);
                 }
                 const embed = createEmbed(item, translatedSnapshot, isAlert ? 0xFF0000 : 0xFFA500);
-                const roleId = client.config.roles.certFR;
+                const roleId = client.config.roles.cyberSecurity;
 
                 await channel.send({
                     content: isAlert ? `<@&${roleId}> **🚨 CERT-FR Security Alert 🚨**` : "**⚠️ CERT-FR Security Advisory ⚠️**",
@@ -252,6 +297,7 @@ async function checkRSScertFR(client) {
 
                 store.entries[entryKey] = {
                     url: entryUrl,
+                    source: "CERT-FR",
                     firstSeenAt: snapshot.detectedAt,
                     versions: [snapshot]
                 };
@@ -269,6 +315,21 @@ async function checkRSScertFR(client) {
                     delete store.entries[previousKey];
                     store.entries[entryKey] = entry;
                 }
+                saveStore(store);
+            } else if (entry.duplicateOf) {
+                const latestVersion = entry.versions.at(-1);
+                if (
+                    hashSnapshot(latestVersion) !== snapshot.hash ||
+                    hasNewVulnerabilityMetadata(latestVersion, snapshot)
+                ) {
+                    entry.versions.push(snapshot);
+                    saveStore(store);
+                }
+            } else if (
+                hashSnapshot(entry.versions.at(-1)) === snapshot.hash &&
+                hasNewVulnerabilityMetadata(entry.versions.at(-1), snapshot)
+            ) {
+                entry.versions.push(snapshot);
                 saveStore(store);
             } else if (hashSnapshot(entry.versions.at(-1)) !== snapshot.hash) {
                 let translatedSnapshot = snapshot;

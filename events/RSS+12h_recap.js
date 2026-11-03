@@ -1,4 +1,5 @@
 const certFR = require("./RSS+12h_recap/CERT-FR");
+const cccs = require("./RSS+12h_recap/CCCS");
 const financials = require("./RSS+12h_recap/financials");
 const naturalEvents = require("./RSS+12h_recap/naturalEvents");
 const RSS = require("./RSS+12h_recap/RSS")
@@ -13,6 +14,7 @@ module.exports = {
         const startTime = Date.now()
         console.log('\n[CRON] Starting -----------------------------------------------'.grey)
         await certFR.execute(client, Date.now());
+        await cccs.execute(client, Date.now());
         await financials.execute(client, Date.now());
         await naturalEvents.execute(client, Date.now());
         await RSS.execute(client, Date.now());

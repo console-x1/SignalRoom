@@ -7,15 +7,15 @@
         "logs": "ID OF THE LOG CHANNEL",
         "naturalEvents": "ID OF THE NATURAL EVENT CHANNEL",
         "financials": "ID OF THE FINANCIAL CHANNEL",
+        "cyberSecurityNews": "ID OF THE CYBERSECURITY-NEWS CHANNEL",
         "cyberSecurity": "ID OF THE CYBERSECURITY CHANNEL",
-        "certFR": "ID OF THE CERT-FR CHANNEL",
 
         "newsCategory": ["DISCORD ID OF THE NEWS CATEGORY", "DISCORD ID OF THE SECOND NEWS CATEGORY", "ETC"]
     },
     "roles": {
         "naturalEvents": "ID OF THE ROLE TO MENTION FOR NATURAL EVENTS",
-        "cyberSecurity": "ID OF THE ROLE TO MENTION FOR CYBERSECURITY ALERT",
-        "certFR": "ID OF THE ROLE TO MENTION FOR CERT-FR ALERT"
+        "cyberSecurityNews": "ID OF THE ROLE TO MENTION FOR CYBERSECURITY ALERT",
+        "cyberSecurity": "ID OF THE ROLE TO MENTION FOR CYBERSECURITY ALERTS"
     },
     "api": {
         "firms": "YOUR FIRMS API KEY"

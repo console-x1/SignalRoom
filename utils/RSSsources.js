@@ -15,6 +15,20 @@ export const sources = [
     weight: 2
   },
   {
+    name: "BleepingComputer",
+    url: "https://www.bleepingcomputer.com/feed/",
+    type: "cyber",
+    channelConfig: "cyberSecurityNews",
+    maxAgeMinutes: 150
+  },
+  {
+    name: "The Hacker News",
+    url: "https://feeds.feedburner.com/TheHackersNews",
+    type: "cyber",
+    channelConfig: "cyberSecurityNews",
+    maxAgeMinutes: 150
+  },
+  {
     name: "USGS Earthquakes",
     url: "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_hour.atom",
     weight: 3
