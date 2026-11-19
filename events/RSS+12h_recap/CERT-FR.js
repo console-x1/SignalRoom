@@ -17,7 +17,7 @@ const RSS_URLS = [
     "https://www.cert.ssi.gouv.fr/alerte/feed/",
     "https://www.cert.ssi.gouv.fr/avis/feed/"
 ];
-const PAGE_CVE_RECHECK_INTERVAL = 24 * 60 * 60 * 1000;
+const PAGE_CVE_RECHECK_INTERVAL = 60 * 60 * 1000;
 const CERT_FR_HOSTS = new Set([
     "cert.ssi.gouv.fr",
     "www.cert.ssi.gouv.fr",
@@ -292,8 +292,8 @@ async function runRSScertFR(client) {
                 await channel.send({
                     content: isAlert ? `<@&${roleId}> **🚨 CERT-FR Security Alert 🚨**` : "**⚠️ CERT-FR Security Advisory ⚠️**",
                     embeds: [embed],
-                    allowedMentions: { roles: isAlert && roleId ? [roleId] : [] }
-                });
+                    allowedMentions: { roles: isAlert && roleId ? [roleId] : [] },
+                }).then(message => message.crosspost());
 
                 store.entries[entryKey] = {
                     url: entryUrl,

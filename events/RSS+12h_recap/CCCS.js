@@ -127,7 +127,7 @@ async function runCCCS(client) {
                     content: "**🚨 Canadian Cyber Security Advisory 🚨**",
                     embeds: [createEmbed(item, snapshot)],
                     allowedMentions: { parse: [] }
-                });
+                }).then(message => message.crosspost());
 
                 store.entries[entryKey] = {
                     url: entryUrl,

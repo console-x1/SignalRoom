@@ -62,7 +62,7 @@ async function sendCyberAnnouncement(channel, announcement) {
     const message = await channel.send({
         content: createAnnouncement(announcement),
         allowedMentions: { parse: [] }
-    });
+    }).then(message => message.crosspost().catch(() => { }));
 
     for (const emoji of REACTIONS) {
         try {

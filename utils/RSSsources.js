@@ -19,14 +19,14 @@ export const sources = [
     url: "https://www.bleepingcomputer.com/feed/",
     type: "cyber",
     channelConfig: "cyberSecurityNews",
-    maxAgeMinutes: 150
+    maxAgeMinutes: 90
   },
   {
     name: "The Hacker News",
     url: "https://feeds.feedburner.com/TheHackersNews",
     type: "cyber",
     channelConfig: "cyberSecurityNews",
-    maxAgeMinutes: 150
+    maxAgeMinutes: 90
   },
   {
     name: "USGS Earthquakes",
