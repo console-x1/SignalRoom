@@ -64,7 +64,7 @@ async function sendCyberAnnouncement(channel, announcement) {
         allowedMentions: { parse: [] }
     });
 
-    message.crossport()
+    message.crosspost()
 
     for (const emoji of REACTIONS) {
         try {
