@@ -123,11 +123,12 @@ async function runCCCS(client) {
                     continue;
                 }
 
-                await channel.send({
+                const msg = await channel.send({
                     content: "**🚨 Canadian Cyber Security Advisory 🚨**",
                     embeds: [createEmbed(item, snapshot)],
                     allowedMentions: { parse: [] }
-                }).then(message => message.crosspost());
+                })
+                msg.crosspost()
 
                 store.entries[entryKey] = {
                     url: entryUrl,

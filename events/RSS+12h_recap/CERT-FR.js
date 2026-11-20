@@ -289,11 +289,12 @@ async function runRSScertFR(client) {
                 const embed = createEmbed(item, translatedSnapshot, isAlert ? 0xFF0000 : 0xFFA500);
                 const roleId = client.config.roles.cyberSecurity;
 
-                await channel.send({
+                const msg = await channel.send({
                     content: isAlert ? `<@&${roleId}> **🚨 CERT-FR Security Alert 🚨**` : "**⚠️ CERT-FR Security Advisory ⚠️**",
                     embeds: [embed],
                     allowedMentions: { roles: isAlert && roleId ? [roleId] : [] },
-                }).then(message => message.crosspost());
+                });
+                msg.crosspost()
 
                 store.entries[entryKey] = {
                     url: entryUrl,
